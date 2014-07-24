@@ -56,7 +56,6 @@ int dbusif_init(int argc, char **argv)
 
 void dbsuif_exit(void)
 {
-    
 }
 
 struct dbusif *dbusif_create(struct tonegend *tonegend)
@@ -78,7 +77,7 @@ struct dbusif *dbusif_create(struct tonegend *tonegend)
 
     dbus_error_init(&err);
 
-    if ((conn = dbus_bus_get(DBUS_BUS_SYSTEM, &err)) == NULL) {
+    if ((conn = dbus_bus_get(DBUS_BUS_SESSION, &err)) == NULL) {
         LOG_ERROR("%s(): Can't connect to D-Bus daemon: %s",
                   __FUNCTION__, err.message);
         dbus_error_free(&err);
