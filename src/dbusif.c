@@ -25,7 +25,6 @@ USA.
 #include <string.h>
 #include <stdarg.h>
 #include <errno.h>
-#include <sys/time.h>
 
 #include <log/log.h>
 #include <trace/trace.h>
@@ -38,8 +37,6 @@ USA.
 #define LOG_WARNING(f, args...) log_error(logctx, f, ##args)
 
 #define TRACE(f, args...) trace_write(trctx, trflags, trkeys, f, ##args)
-
-#define DBUS_INACTIVITY_TIMEOUT 60
 
 static DBusHandlerResult handle_message(DBusConnection *,DBusMessage *,void *);
 static gchar *create_key(gchar *, gchar *, gchar *);
@@ -59,16 +56,6 @@ int dbusif_init(int argc, char **argv)
 
 void dbsuif_exit(void)
 {
-}
-
-void dbusif_stop_idle_timer(void)
-{
-    alarm(0);
-}
-
-void dbusif_start_idle_timer(void)
-{
-    alarm(DBUS_INACTIVITY_TIMEOUT); /* raise SIGALRM on inactivity */
 }
 
 struct dbusif *dbusif_create(struct tonegend *tonegend)
@@ -127,8 +114,6 @@ struct dbusif *dbusif_create(struct tonegend *tonegend)
     dbusif->conn   = conn;
     dbusif->hash   = g_hash_table_new_full(g_str_hash, g_str_equal,
                                            destroy_key, NULL);
-
-    dbusif_start_idle_timer();
     LOG_INFO("D-Bus setup OK");
 
     return dbusif;
@@ -246,8 +231,6 @@ static DBusHandlerResult handle_message(DBusConnection *conn,
 
     (void)conn;
 
-    dbusif_stop_idle_timer();
-
     if (dbus_message_get_type(msg) != DBUS_MESSAGE_TYPE_METHOD_CALL)
         TRACE("%s(): ignoring non method_call's", __FUNCTION__);
     else {
@@ -294,8 +277,6 @@ static DBusHandlerResult handle_message(DBusConnection *conn,
         dbus_message_unref(reply);
     }
     
-    dbusif_start_idle_timer();
-
     return DBUS_HANDLER_RESULT_HANDLED;
 }
 

@@ -120,8 +120,7 @@ int main(int argc, char **argv)
     
     if (sigaction(SIGHUP , &sa, NULL) < 0 ||
         sigaction(SIGTERM, &sa, NULL) < 0 ||
-        sigaction(SIGINT , &sa, NULL) < 0 ||
-        sigaction(SIGALRM, &sa, NULL) < 0   ) {
+        sigaction(SIGINT , &sa, NULL) < 0   ) {
         LOG_ERROR("Failed to install signal handlers");
         return errno;
     }
@@ -382,6 +381,7 @@ static void parse_options(int argc, char **argv, struct cmdopt *cmdopt)
     }
 }
 
+
 static void signal_handler(int signo, siginfo_t *info, void *data)
 {
 #if 0
@@ -391,9 +391,6 @@ static void signal_handler(int signo, siginfo_t *info, void *data)
     (void)data;
 
     switch (signo) {
-    case SIGALRM:
-        LOG_INFO("Inactive, exiting.");
-        /* fall-through */
     case SIGHUP:
     case SIGTERM:
     case SIGINT:
