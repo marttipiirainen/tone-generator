@@ -14,10 +14,6 @@ if [ "$2" ]
     DURATION=$2
 fi
 
-# activate service and wait a moment
-dbus-send --session --type=method_call --dest=org.freedesktop.DBus /org/freedesktop/DBus org.freedesktop.DBus.StartServiceByName string:"com.Nokia.Telephony.Tones" uint32:0
-sleep 1
-
 echo "Playing DTMF tone $TONE for $DURATION seconds."
 dbus-send --session --type=method_call --dest=com.Nokia.Telephony.Tones /com/Nokia/Telephony/Tones com.Nokia.Telephony.Tones.StartEventTone uint32:$TONE int32:0 uint32:0
 sleep $DURATION

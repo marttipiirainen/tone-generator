@@ -22,10 +22,6 @@ if [ "$2" ]
     DURATION=$2
 fi
 
-# activate service and wait a moment
-dbus-send --session --type=method_call --dest=org.freedesktop.DBus /org/freedesktop/DBus org.freedesktop.DBus.StartServiceByName string:"com.Nokia.Telephony.Tones" uint32:0
-sleep 1
-
 echo "Playing signal tone $TONE for $DURATION seconds."
 let DURATION=(1000*$DURATION)
 dbus-send --session --type=method_call --dest=com.Nokia.Telephony.Tones /com/Nokia/Telephony/Tones com.Nokia.Telephony.Tones.StartNotificationTone uint32:$TONE int32:20 uint32:$DURATION
