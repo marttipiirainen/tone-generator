@@ -1,0 +1,22 @@
+Source: tone-generator
+Priority: optional
+Maintainer: Abc Xyz <abc.xyz@canonical.com>
+Build-Depends: debhelper (>= 9), cdbs, autotools-dev, check, libglib2.0-dev, libpulse-dev, libdbus-1-dev, libdbus-glib-1-dev
+Standards-Version: 3.9.5
+Section: sound
+
+Package: tone-generator
+Section: sound
+Architecture: any
+Depends: ${shlibs:Depends}, dbus
+Description: tonegend
+ tone generator daemon for call progress indication and DTMF
+
+Package: tone-generator-dbg
+Section: devel
+Priority: extra
+Architecture: any
+Depends: tone-generator (= ${binary:Version})
+Description: tonegend
+ tone generator daemon for call progress indication and DTMF
+
